@@ -11,7 +11,7 @@ A modern file sharing applet built with F#, Fable, and CloudflareFS, featuring W
 
 ## NOTICE
 
-A major current dependency on this is having the [CloudflareFS](https://github.com/speakeztech/CloudflareFS) repository built locally and mapping to those assemblies for building things like the CLI tool. Once those libraries a fully vetted and published this will become a simpler, standard 'nuget' operation to pull down the dependencies. If you're not in the mood to spelunk that deeply into local dependency building, this project is likely not for you. (yet)
+A major current dependency on this is having the [CloudflareFS](https://github.com/speakeztech/CloudflareFS) repository built locally and mapping to those assemblies for building things like the CLI tool. Once those libraries are fully vetted and published this will become a simpler, standard 'nuget' operation to pull down the dependencies. If you're not in the mood to spelunk that deeply into local dependency building, this project is likely not for you. (yet) Stay tuned! 📺
 
 ## Architecture
 
