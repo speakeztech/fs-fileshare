@@ -5,7 +5,7 @@
 [![Cloudflare Pages](https://img.shields.io/badge/Cloudflare-Pages-F38020?style=flat&logo=cloudflare&logoColor=white)](https://pages.cloudflare.com/)
 [![Cloudflare R2](https://img.shields.io/badge/Cloudflare-R2-F38020?style=flat&logo=cloudflare&logoColor=white)](https://www.cloudflare.com/products/r2/)
 
-A modern file sharing system built with F#, Fable, and CloudflareFS, featuring WebDAV support and a React-based web interface.
+A modern file sharing applet built with F#, Fable, and CloudflareFS, featuring WebDAV support and a React-based web interface.
 
 ![File manager screen shot](assets/File-mgr-preview.png)
 
@@ -20,7 +20,7 @@ This project consists of three main components:
 - **Features**:
   - Full WebDAV protocol support (PROPFIND, GET, PUT, DELETE, MKCOL, COPY, MOVE)
   - RESTful File API for web interface
-  - Basic authentication using Cloudflare Secrets
+  - Authentication using Cloudflare Secrets
   - CORS enabled for web access
 
 ### 2. Pages (Frontend)
