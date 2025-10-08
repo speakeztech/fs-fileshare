@@ -11,7 +11,7 @@ A modern file sharing system built with F#, Fable, and CloudflareFS, featuring W
 
 ## Architecture
 
-This project consists of two main components:
+This project consists of three main components:
 
 ### 1. Worker (Backend)
 - **Technology**: F# compiled to JavaScript via Fable
@@ -34,45 +34,18 @@ This project consists of two main components:
   - Folder creation
   - Responsive design
 
-## Project Structure
+### 3. CLI (Deployment Tool)
 
-```
-fs-fileshare/
-├── src/
-│   ├── Worker/              # Cloudflare Worker (Backend)
-│   │   ├── Auth.fs          # Authentication logic
-│   │   ├── FileApi.fs       # RESTful API endpoints
-│   │   ├── Main.fs          # Worker entry point
-│   │   ├── R2Helpers.fs     # R2 storage utilities
-│   │   ├── Types.fs         # Shared types
-│   │   ├── WebDav.fs        # WebDAV protocol implementation
-│   │   └── Worker.fsproj
-│   │
-│   └── Pages/               # Cloudflare Pages (Frontend)
-│       ├── Components/      # React components
-│       │   ├── Breadcrumb.fs
-│       │   ├── FileIcon.fs
-│       │   ├── FileItem.fs
-│       │   ├── FileManager.fs
-│       │   └── UploadZone.fs
-│       ├── Pages/           # Page components
-│       │   └── Index.fs
-│       ├── App.fs           # Application entry
-│       ├── FileApi.fs       # API client
-│       ├── Router.fs        # Routing
-│       ├── Server.fs        # Configuration
-│       ├── View.fs          # Main view
-│       └── Pages.fsproj
-│
-├── public/                  # Static assets
-│   ├── index.html
-│   └── styles.css
-│
-├── package.json
-├── vite.config.js
-├── tailwind.config.js
-└── README.md
-```
+- **Technology**: F# (.NET Tool)
+- **Purpose**: Streamlined deployment and user management
+- **Features**:
+  - One-command deployment of Worker and Pages
+  - User credential management via Cloudflare Secrets
+  - Deployment status monitoring
+  - Uses Cloudflare management APIs
+  - Also wraps Fable and Wrangler for certain functions
+
+> See [src/CLI/README.md](src/CLI/README.md) for installation, configuration, and usage details.
 
 ## Development
 
