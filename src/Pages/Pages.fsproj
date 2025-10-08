@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+    </PropertyGroup>
+    <ItemGroup>
+        <Compile Include="Server.fs" />
+        <Compile Include="Router.fs" />
+        <Compile Include="FileApi.fs" />
+
+        <Compile Include="Components\UploadProgressModal.fs" />
+        <Compile Include="Components\FileIcon.fs" />
+        <Compile Include="Components\FileItem.fs" />
+        <Compile Include="Components\Breadcrumb.fs" />
+        <Compile Include="Components\UploadZone.fs" />
+        <Compile Include="Components\Footer.fs" />
+        <Compile Include="Components\ThemeSwitch.fs" />
+        <Compile Include="Components\FileManager.fs" />
+
+        <Compile Include="Pages\Index.fs" />
+
+        <Compile Include="View.fs" />
+        <Compile Include="App.fs" />
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Fable.Core" Version="4.3.0" />
+        <PackageReference Include="Fable.Promise" Version="3.2.0" />
+        <PackageReference Include="Feliz" Version="2.9.0" />
+        <PackageReference Include="Feliz.Router" Version="4.0.0" />
+        <PackageReference Include="Feliz.UseElmish" Version="2.5.0" />
+        <PackageReference Include="Feliz.DaisyUI" Version="4.1.0" />
+    </ItemGroup>
+</Project>

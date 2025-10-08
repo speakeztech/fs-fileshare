@@ -1,0 +1,222 @@
+module FS.FileShare.Pages.View
+
+open Feliz
+open Feliz.Router
+open Feliz.DaisyUI
+open Feliz.UseElmish
+open Elmish
+open FS.FileShare.Pages.Router
+open Browser.WebStorage
+
+type Msg =
+    | UrlChanged of Page
+    | SetUsername of string
+    | SetPassword of string
+    | Login
+    | Logout
+
+type State = {
+    Page: Page
+    Username: string
+    Password: string
+    IsAuthenticated: bool
+}
+
+let init () =
+    let nextPage = Router.currentPath() |> Page.parseFromUrlSegments
+
+    // Try to restore session from sessionStorage
+    let username = sessionStorage.getItem("username")
+    let password = sessionStorage.getItem("password")
+    let isAuthenticated = not (isNull username) && not (isNull password)
+
+    {
+        Page = nextPage
+        Username = if isNull username then "" else username
+        Password = if isNull password then "" else password
+        IsAuthenticated = isAuthenticated
+    }, Cmd.navigatePage nextPage
+
+let update (msg: Msg) (state: State) : State * Cmd<Msg> =
+    match msg with
+    | UrlChanged page ->
+        { state with Page = page }, Cmd.none
+
+    | SetUsername username ->
+        { state with Username = username }, Cmd.none
+
+    | SetPassword password ->
+        { state with Password = password }, Cmd.none
+
+    | Login ->
+        if state.Username <> "" && state.Password <> "" then
+            // Store credentials in sessionStorage (cleared when browser closes)
+            sessionStorage.setItem("username", state.Username)
+            sessionStorage.setItem("password", state.Password)
+            { state with IsAuthenticated = true }, Cmd.none
+        else
+            state, Cmd.none
+
+    | Logout ->
+        // Clear session
+        sessionStorage.removeItem("username")
+        sessionStorage.removeItem("password")
+        { state with IsAuthenticated = false; Username = ""; Password = "" }, Cmd.none
+
+[<ReactComponent>]
+let AppView () =
+    let state, dispatch = React.useElmish(init, update, [||])
+
+    let renderPage =
+        if not state.IsAuthenticated then
+            // Login page
+            Html.div [
+                prop.className "flex flex-col h-screen bg-base-200"
+                prop.children [
+                    Html.div [
+                        prop.className "flex-1 flex items-center justify-center"
+                        prop.children [
+                            Daisy.card [
+                                prop.className "w-96 bg-base-100 shadow-xl"
+                                prop.children [
+                                    Daisy.cardBody [
+                                        Html.h2 [
+                                            prop.className "card-title text-2xl font-bold text-center justify-center"
+                                            prop.text "FS FileShare"
+                                        ]
+
+                                        Html.form [
+                                            prop.className "flex flex-col gap-4 mt-4"
+                                            prop.onSubmit (fun e ->
+                                                e.preventDefault()
+                                                dispatch Login
+                                            )
+                                            prop.children [
+                                                Daisy.formControl [
+                                                    Daisy.label [
+                                                        Daisy.labelText "Username"
+                                                    ]
+                                                    Daisy.input [
+                                                        input.bordered
+                                                        prop.value state.Username
+                                                        prop.onChange (SetUsername >> dispatch)
+                                                        prop.placeholder "Enter username"
+                                                        prop.autoComplete "username"
+                                                    ]
+                                                ]
+
+                                                Daisy.formControl [
+                                                    Daisy.label [
+                                                        Daisy.labelText "Password"
+                                                    ]
+                                                    Daisy.input [
+                                                        input.bordered
+                                                        prop.type' "password"
+                                                        prop.value state.Password
+                                                        prop.onChange (SetPassword >> dispatch)
+                                                        prop.placeholder "Enter password"
+                                                        prop.autoComplete "current-password"
+                                                    ]
+                                                ]
+
+                                                Daisy.button.button [
+                                                    button.primary
+                                                    prop.type' "submit"
+                                                    prop.className "w-full"
+                                                    prop.text "Login"
+                                                ]
+                                            ]
+                                        ]
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ]
+                    Components.Footer.Footer()
+                ]
+            ]
+        else
+            // Main application
+            let content =
+                match state.Page with
+                | Page.FileManager _ ->
+                    Pages.Index.IndexView state.Username state.Password
+
+            Html.div [
+                prop.className "flex flex-col h-screen"
+                prop.children [
+                    // Header
+                    Html.div [
+                        prop.className "navbar bg-primary text-primary-content"
+                        prop.children [
+                            Html.div [
+                                prop.className "w-full max-w-screen-2xl mx-auto px-4 flex items-center relative"
+                                prop.children [
+                                    // Left: Logo
+                                    Html.div [
+                                        prop.className "flex-none"
+                                        prop.children [
+                                            Html.img [
+                                                prop.src "/telix-logo.svg"
+                                                prop.alt "Telix"
+                                                prop.className "w-10 h-10"
+                                            ]
+                                        ]
+                                    ]
+
+                                    // Center: Title (absolutely positioned for true centering)
+                                    Html.div [
+                                        prop.className "absolute left-1/2 transform -translate-x-1/2"
+                                        prop.children [
+                                            Html.span [
+                                                prop.className "text-xl font-bold"
+                                                prop.text "FS File Share"
+                                            ]
+                                        ]
+                                    ]
+
+                                    // Right: User controls
+                                    Html.div [
+                                        prop.className "flex-none flex items-center gap-4 ml-auto"
+                                        prop.children [
+                                            Html.span [
+                                                prop.className "text-sm"
+                                                prop.text $"Logged in as: {state.Username}"
+                                            ]
+                                            Daisy.button.button [
+                                                button.primary
+                                                button.sm
+                                                prop.onClick (fun _ -> dispatch Logout)
+                                                prop.text "Logout"
+                                            ]
+                                            Html.div [
+                                                prop.className "divider divider-horizontal mx-0"
+                                            ]
+                                            Components.ThemeSwitch.ThemeSwitch()
+                                        ]
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ]
+
+                    // Content
+                    Html.div [
+                        prop.className "flex-1 overflow-auto flex justify-center"
+                        prop.children [
+                            Html.div [
+                                prop.className "w-full max-w-screen-2xl px-4"
+                                prop.children [ content ]
+                            ]
+                        ]
+                    ]
+                    // Footer
+                    Components.Footer.Footer()
+                ]
+            ]
+
+    React.router [
+        router.pathMode
+        router.onUrlChanged (Page.parseFromUrlSegments >> UrlChanged >> dispatch)
+        router.children [ renderPage ]
+    ]

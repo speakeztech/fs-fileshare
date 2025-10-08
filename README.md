@@ -1,0 +1,111 @@
+# FS Fileshare
+
+[![Made with Cloudflare](https://img.shields.io/badge/Made%20with-Cloudflare-F38020?style=flat&logo=cloudflare&logoColor=white)](https://www.cloudflare.com/)
+[![Cloudflare Workers](https://img.shields.io/badge/Cloudflare-Workers-F38020?style=flat&logo=cloudflare&logoColor=white)](https://workers.cloudflare.com/)
+[![Cloudflare Pages](https://img.shields.io/badge/Cloudflare-Pages-F38020?style=flat&logo=cloudflare&logoColor=white)](https://pages.cloudflare.com/)
+[![Cloudflare R2](https://img.shields.io/badge/Cloudflare-R2-F38020?style=flat&logo=cloudflare&logoColor=white)](https://www.cloudflare.com/products/r2/)
+
+A modern file sharing system built with F#, Fable, and CloudflareFS, featuring WebDAV support and a React-based web interface.
+
+![File manager screen shot](assets/File-mgr-preview.png)
+
+## Architecture
+
+This project consists of two main components:
+
+### 1. Worker (Backend)
+- **Technology**: F# compiled to JavaScript via Fable
+- **Runtime**: Cloudflare Workers via CloudflareFS
+- **Storage**: Cloudflare R2 (single shared bucket)
+- **Features**:
+  - Full WebDAV protocol support (PROPFIND, GET, PUT, DELETE, MKCOL, COPY, MOVE)
+  - RESTful File API for web interface
+  - Basic authentication using Cloudflare Secrets
+  - CORS enabled for web access
+
+### 2. Pages (Frontend)
+- **Technology**: F# + Fable + React + Elmish
+- **UI Framework**: DaisyUI (Tailwind CSS)
+- **Features**:
+  - Modern file manager interface
+  - Drag-and-drop file upload
+  - Directory navigation with breadcrumbs
+  - File operations (upload, download, delete)
+  - Folder creation
+  - Responsive design
+
+## Project Structure
+
+```
+fs-fileshare/
+├── src/
+│   ├── Worker/              # Cloudflare Worker (Backend)
+│   │   ├── Auth.fs          # Authentication logic
+│   │   ├── FileApi.fs       # RESTful API endpoints
+│   │   ├── Main.fs          # Worker entry point
+│   │   ├── R2Helpers.fs     # R2 storage utilities
+│   │   ├── Types.fs         # Shared types
+│   │   ├── WebDav.fs        # WebDAV protocol implementation
+│   │   └── Worker.fsproj
+│   │
+│   └── Pages/               # Cloudflare Pages (Frontend)
+│       ├── Components/      # React components
+│       │   ├── Breadcrumb.fs
+│       │   ├── FileIcon.fs
+│       │   ├── FileItem.fs
+│       │   ├── FileManager.fs
+│       │   └── UploadZone.fs
+│       ├── Pages/           # Page components
+│       │   └── Index.fs
+│       ├── App.fs           # Application entry
+│       ├── FileApi.fs       # API client
+│       ├── Router.fs        # Routing
+│       ├── Server.fs        # Configuration
+│       ├── View.fs          # Main view
+│       └── Pages.fsproj
+│
+├── public/                  # Static assets
+│   ├── index.html
+│   └── styles.css
+│
+├── package.json
+├── vite.config.js
+├── tailwind.config.js
+└── README.md
+```
+
+## Development
+
+### Prerequisites
+- .NET 8.0 SDK
+- Node.js 20+
+- Fable CLI
+
+### Setup
+
+1. Install dependencies:
+```bash
+npm install
+dotnet tool restore
+```
+
+2. Start development server:
+```bash
+npm start
+```
+
+### Build
+
+```bash
+npm run build
+```
+
+## Authentication
+
+Users are authenticated using Cloudflare Secrets with a shared R2 bucket for all users.
+
+## License
+
+MIT License - see [LICENSE](LICENSE) file for details.
+
+Copyright © 2025 Rower Consulting

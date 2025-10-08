@@ -1,0 +1,34 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <RootNamespace>FS.FileShare.CLI</RootNamespace>
+    <PackAsTool>true</PackAsTool>
+    <ToolCommandName>fs-cli</ToolCommandName>
+    <PackageId>FS.FileShare.CLI</PackageId>
+    <Version>1.0.0</Version>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="Core\Config.fs" />
+    <Compile Include="Core\R2Client.fs" />
+    <Compile Include="Core\ProcessHelper.fs" />
+    <Compile Include="Commands\Deploy.fs" />
+    <Compile Include="Commands\AddUser.fs" />
+    <Compile Include="Commands\Status.fs" />
+    <Compile Include="Program.fs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Argu" Version="6.2.5" />
+    <PackageReference Include="FsSpectre" Version="0.5.2" />
+    <PackageReference Include="Spectre.Console" Version="0.51.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="D:\repos\CloudflareFS\src\Management\CloudFlare.Management.R2\CloudFlare.Management.R2.fsproj" />
+    <ProjectReference Include="D:\repos\CloudflareFS\src\Management\CloudFlare.Management.Workers\CloudFlare.Management.Workers.fsproj" />
+  </ItemGroup>
+
+</Project>
